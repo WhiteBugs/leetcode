@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Stack;
 
 
 
@@ -15,8 +17,194 @@ public class Solution {
 
 	public static void main(String arg[]){
 		System.out.println("");
+		System.out.println(new Solution());
 		
 	}
+	
+	//637. Average of Levels in Binary Tree
+    public List<Double> averageOfLevels(TreeNode root) {
+        ArrayList<long[]> list = new ArrayList<>();
+        recursion(list, root, 0);
+        ArrayList<Double> answer = new ArrayList<>();
+        for(int i=0; i<list.size(); i++){
+        	long[] temp = list.get(i);
+        	answer.add(((double)temp[0])/temp[1]);
+        }
+        return answer;
+    }
+    public void recursion(List<long[]> list, TreeNode node,  int level){
+    	try{
+    		list.get(level);
+    	}catch (Exception e) {
+			list.add(new long[]{0,-1});//int[0] is sum , and int[1] is node number;
+		}
+    	long[] temp = list.get(level);
+    	if(node==null){
+    		if(temp[0]==0&&temp[1]==-1){
+    			list.remove(level);
+    		}
+    		return ;
+    	}
+    	if(temp[1]==-1){
+    		list.get(level)[1]=0;
+    	}
+		list.set(level, new long[]{temp[0]+node.val,++temp[1]});
+    	recursion(list, node.left, level+1);
+    	recursion(list, node.right, level+1);
+    }
+	
+	
+	
+	//496. Next Greater Element I
+	
+	/* a smarter solution on leetcode.com  
+	 *
+	 *  public int[] nextGreaterElement(int[] findNums, int[] nums) {
+           Map<Integer, Integer> map = new HashMap<>(); // map from x to next greater element of x
+           Stack<Integer> stack = new Stack<>();
+           for (int num : nums) {
+               while (!stack.isEmpty() && stack.peek() < num)
+                   map.put(stack.pop(), num);
+               stack.push(num);
+           }   
+           for (int i = 0; i < findNums.length; i++)
+               findNums[i] = map.getOrDefault(findNums[i], -1);
+           return findNums;
+        }
+	 * 
+	 */
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        HashMap<Integer, Integer> list = new HashMap<>();
+        for(int i=0; i<nums2.length; i++){
+        	int greater = 0;
+        	if(i==nums2.length-1){
+        		list.put(nums2[i], -1);
+    			break;
+        	}
+        	for(int j=i+1; j<nums2.length; j++){
+        		if(nums2[j]>nums2[i]){
+        			greater = nums2[j];
+        			list.put(nums2[i], greater);
+        			break;
+        		}
+        		if(j==nums2.length-1){
+        			list.put(nums2[i], -1);
+        			break;
+        		}
+        	}
+        }
+        for(int i=0; i<nums1.length; i++){
+        	nums1[i] = list.get(nums1[i]);
+        }
+    	return nums1;
+    }
+	
+	//463. Island Perimeter
+    public int islandPerimeter(int[][] grid) {
+    	//网上的解法:考虑临近是否有岛的时候，横向只需考虑一个方向即可，纵向也只需考虑一个方向即可，
+    	//因为题干已经说了，只有一个大岛而且没有对角线连接。。。
+        int length = 0;
+        for(int i=0; i<grid.length; i++){
+        	for(int j=0; j<grid[0].length; j++){
+        		if(grid[i][j]==1){
+        			length+=4;
+        			try{
+        				length+=grid[i-1][j]==1?-1:0;
+        			}catch (ArrayIndexOutOfBoundsException e) {
+					}
+        			try{
+        				length+=grid[i+1][j]==1?-1:0;
+        			}catch (ArrayIndexOutOfBoundsException e) {
+					}
+        			try{
+        				length+=grid[i][j-1]==1?-1:0;
+        			}catch (ArrayIndexOutOfBoundsException e) {
+					}
+        			try{
+        				length+=grid[i][j+1]==1?-1:0;
+        			}catch (ArrayIndexOutOfBoundsException e) {
+					}
+        		}
+        	}
+        }
+    	return length;
+    }
+	
+	
+	//682. Baseball Game
+    public int calPoints(String[] ops) {
+        Stack<Integer> list = new Stack<>();
+        for(String s : ops){
+        	if(s.matches("-?\\d+")){
+        		list.push(Integer.parseInt(s));
+        	}else{
+        		switch (s) {
+				case "D":
+					list.add(list.peek()*2);
+					break;
+				case "C":
+					list.pop();
+					break;
+				case "+":
+					int temp1 = list.pop();
+					int temp2 = temp1+list.peek();
+					list.push(temp1);
+					list.push(temp2);
+					break;
+				default:
+					break;
+				}
+        	}
+        }
+        int answer=0;
+        while(!list.isEmpty()){
+        	answer+=list.pop();
+        }
+        return answer;
+    }
+	
+	//412. Fizz Buzz
+    public List<String> fizzBuzz(int n) {
+        List<String> answer = new ArrayList<>();
+        for(int i=1; i<n+1; i++){
+        	String string = "";
+        	int temp3 = i%3 , temp5 = i%5;
+        	if(temp3==0){
+        		string+="Fizz";
+        	}
+        	if(temp5==0){
+        		string+="Buzz";
+        	}
+        	if(string.equals("")){
+        		answer.add(new Integer(i).toString());
+        	}else{
+        		answer.add(string);
+        	}
+        }
+        return answer;
+    }
+	
+	
+	//566. Reshape the Matrix
+    public int[][] matrixReshape(int[][] nums, int r, int c) {
+        if(nums.length*nums[0].length!=r*c){
+        	return nums;
+        }
+        int[] save = new int[r*c];
+        for(int i=0; i<nums.length; i++){
+        	for(int j=0; j<nums[0].length; j++){
+        		save[i*nums[0].length+j] = nums[i][j];
+        	}
+        }
+        int[][] answer = new int[r][c];
+        for(int i=0; i<r; i++){
+        	for(int j=0; j<c; j++){
+        		answer[i][j] = save[i*c+j];
+        	}
+        }
+    	return answer;
+    }
+	
 	
 	
 	//669. Trim a Binary Search Tree
