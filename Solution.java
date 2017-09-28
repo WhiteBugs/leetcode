@@ -17,9 +17,50 @@ public class Solution {
 
 	public static void main(String arg[]){
 		System.out.println("");
-		System.out.println(new Solution());
+		System.out.println(new Solution().singleNumber(new int[]{1,4,6,4,853,0,1,6,8,8,7,0,7}));
 		
 	}
+	
+	//136. Single Number
+    public int singleNumber(int[] nums) {
+    	if(nums==null||nums.length%2==0)
+            return 0;
+        HashMap<Integer	, String> list = new HashMap<>();
+    	for(int n : nums){
+        	if(list.containsKey(n)){
+        		list.remove(n);
+        	}else {
+				list.put(n, null);
+			}
+        }
+    	return Integer.parseInt(list.toString().split("\\{")[1].split("\\=")[0]);
+    }
+	
+	
+	//292. Nim Game
+	/* a better solution
+	 * 
+	 * return n&3!=0;
+	 * 
+	 */
+    public boolean canWinNim(int n) {
+        return n%4!=0;
+    }	
+	
+	
+	
+	//521. Longest Uncommon Subsequence I
+    public int findLUSlength(String a, String b) {
+        if(a.equals("")||b.equals("")){
+        	return 0;
+        }
+        if(a.equals(b)){
+        	return -1;
+        }
+        return a.length()>b.length()? a.length():b.length();
+    }
+	
+	
 	
 	//637. Average of Levels in Binary Tree
     public List<Double> averageOfLevels(TreeNode root) {
