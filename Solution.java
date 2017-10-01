@@ -21,6 +21,64 @@ public class Solution {
 		
 	}
 	
+	//520. Detect Capital
+	/*
+	 * answer on leetcode
+	 * 
+	 * return word.matches("[A-Z]+|[a-z]+|[A-Z][a-z]+");
+	 */
+    public boolean detectCapitalUse(String word) {
+    	int num = 0;
+    	boolean first = false;
+        for(int i=0; i<word.length();i++){
+        	char c = word.charAt(i);
+        	if(c<91 && c>64){
+        		if (i==0) {
+					first = true;
+				}
+        		num++;
+        	}
+        }
+        return num==word.length()||num==0||(num==1&&first)? true : false;
+    }	
+	
+	
+	//226. Invert Binary Tree
+    public TreeNode invertTree(TreeNode root) {
+        if(root == null) 
+        	return null;
+        TreeNode temp;
+        temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+        root.left = invertTree(root.left);
+        root.right = invertTree(root.right);
+        return root;
+    }
+	
+	
+	//104. Maximum Depth of Binary Tree
+    public int maxDepth(TreeNode root) {
+    	if(root == null)
+    		return 0;
+    	int left = maxDepth(root.left);
+    	int right = maxDepth(root.right);
+        return left>right? left+1 : right+1;
+    }
+	
+	//485. Max Consecutive Ones
+    public int findMaxConsecutiveOnes(int[] nums) {
+        int max = 0, another = 0;
+        for(int i : nums){
+        	another = i==1? another+1 : 0;
+        	if(max<another){
+    			max = another;
+    		}
+        }        
+        return max;
+    }
+	
+    
 	//136. Single Number
     public int singleNumber(int[] nums) {
     	if(nums==null||nums.length%2==0)
