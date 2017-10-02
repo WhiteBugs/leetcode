@@ -3,23 +3,141 @@ package com.leetcode;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
 
 
-
 public class Solution {
+	private TreeNode root = null;
 
 	public static void main(String arg[]){
 		System.out.println("");
-		System.out.println(new Solution().singleNumber(new int[]{1,4,6,4,853,0,1,6,8,8,7,0,7}));
+		Solution solution = new Solution();
+		solution.insert(new int[]{5,3,6,2,4,7});
+		solution.printElement();
+		System.out.println(new Solution().findTarget(solution.root, 13));
 		
 	}
+	
+	//283. Move Zeroes
+    public void moveZeroes(int[] nums) {
+        for(int i=0; i<nums.length; i++){
+        	if(nums[i] == 0 ){
+        		for(int j=i+1; j<nums.length; j++){
+        			if(nums[j] != 0){
+        				nums[i] = nums[j];
+        				nums[j] = 0;
+        				break;
+        			}
+        		}
+        		if(nums[i] == 0) 
+        			break;
+        	}
+        }
+    }
+	
+	
+	
+	private void insert(int[] array){
+		root = new TreeNode(array[0]);
+		for(int i=1; i<array.length; i++){
+			insert(array[i] , root);
+		}
+	}
+	private TreeNode insert(int num , TreeNode node){
+		if(node == null){
+			return new TreeNode(num);
+		}
+		if(num < node.val) node.left = insert(num, node.left);
+		if(num > node.val) node.right = insert(num, node.right);
+		return node;
+	}
+	public void printElement(){
+		printElement(root);
+	}
+	private void printElement(TreeNode tree){
+		if(tree.left!=null){
+			printElement(tree.left);
+		}
+		System.out.print(" "+tree.val+" ");
+		if(tree.right!=null){
+			printElement(tree.right);
+		}
+	}
+	
+	
+	//389. Find the Difference
+	/*
+	 * 
+	 
+	public char findTheDifference(String s, String t) {
+		HashSet<Character> set = new HashSet<>();
+		for(char c : s.toCharArray()){
+			set.add(c);
+		}
+		for(char c : t.toCharArray()){
+			if(!set.contains(c))
+				return c;
+		}
+		return ' ';
+	}
+	*/
+	
+	//653. Two Sum IV - Input is a BST
+    public boolean findTarget(TreeNode root, int k) {
+    	HashMap< Integer, Integer> hash = new HashMap<>();
+    	ArrayList<Integer> list = new ArrayList<>();
+    	addItem( root , list);
+    	for(int i : list){
+    		hash.put(i, 0);
+    	}
+    	for(int i : list){
+    		if(k!=2*i&&hash.containsKey(k-i)){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    private void addItem(TreeNode node , ArrayList<Integer> list){
+    	if(node==null) return;
+    	list.add(node.val);
+    	addItem(node.left , list);
+    	addItem(node.right, list);
+    }
+	
+	//448. Find All Numbers Disappeared in an Array
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+    	HashSet<Integer> set = new HashSet<Integer>();
+        for(int i=1; i<=nums.length; i++){
+        	set.add(i);
+        }
+        for(int i : nums){
+        	set.remove(i);
+        }
+        return new ArrayList<>(set);
+    }
+	
+	
+	
+	//258. Add Digits
+    public int addDigits(int num) {
+        if(num<10){
+        	return num;
+        }
+        num = 0;
+        String n = new Integer(num).toString();
+        for(char c : n.toCharArray()){
+        	num += c-48;
+        }
+        return  addDigits(num);
+    }
+	
+	
 	
 	//520. Detect Capital
 	/*
