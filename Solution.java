@@ -6,9 +6,9 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 
 
@@ -18,11 +18,188 @@ public class Solution {
 	public static void main(String arg[]){
 		System.out.println("");
 		Solution solution = new Solution();
-		solution.insert(new int[]{5,3,6,2,4,7});
-		solution.printElement();
-		System.out.println(new Solution().findTarget(solution.root, 13));
+		System.out.println(-137%10);
 		
 	}
+	
+	//2. Add Two Numbers
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode temp = new ListNode(0);
+        ListNode answer = temp;
+        int carry = 0;
+        while(l1!=null || l2!=null){
+        	temp.next = new ListNode(0);
+        	temp = temp.next;
+        	if(l1==null)
+        		l1 = new ListNode(0);
+        	if(l2==null)
+        		l2 = new ListNode(0);
+        	int sum = l1.val+l2.val+carry;
+        	carry = sum/10;
+        	temp.val = sum%10;
+        	l1 = l1.next;
+        	l2 = l2.next;
+        }
+        return answer.next;
+    }
+	
+	
+	//7. Reverse Integer
+	/*
+	 * 需要注意的点是，int最小值的绝对值2147483648比int的最大值大1。。。
+	 */
+    public int reverse(int x) {
+    	if(x==Integer.MAX_VALUE||x==Integer.MIN_VALUE)
+    		return 0;
+    	long num = Long.parseLong(new StringBuilder(new Integer(Math.abs(x)).toString()).reverse().toString());
+    	if(num>Integer.MAX_VALUE)
+    		return 0;
+    	if(x<0)
+    		return -(int)num;
+        return (int)num;
+    }
+    
+	
+	//695. Max Area of Island
+    public int maxAreaOfIsland(int[][] grid) {
+    	if(grid==null||grid.length==0||grid[0].length==0)
+    		return 0;
+        int answer = 0;
+        for(int i=0; i<grid.length; i++){
+        	for(int j=0; j<grid[0].length; j++){
+        		if(grid[i][j] == 1){
+        			int area = islandArea(grid, new int[]{i,j});
+        		    answer = answer>area? answer : area;
+        		}
+        	}
+        }
+        return answer;
+    }
+    private int islandArea(int[][] grid , int[] index){
+    	int area = 1;
+    	grid[index[0]][index[1]] = 0;
+    	int[][] near = new int[][]{{index[0]-1,index[1]}, {index[0]+1,index[1]}, {index[0],index[1]-1}, {index[0],index[1]+1}};
+    	for(int i=0; i<near.length; i++){
+    		if(near[i][0]>=0&&near[i][0]<grid.length&&
+    		   near[i][1]>=0&&near[i][1]<grid[0].length&&
+    				grid[near[i][0]][near[i][1]] == 1){
+    			area += islandArea(grid, near[i]);
+    		}
+    	}
+    	return area;
+    }
+	
+	//371. Sum of Two Integers
+    public int getSum(int a, int b) {
+        return Math.addExact(a, b);
+    }
+	
+	
+	//690. Employee Importance
+	public int getImportance(List<Employee> employees, int id) {
+        if(employees==null&&employees.size()==0)
+    		return 0;
+        HashMap<Integer, Employee> list = new HashMap<>();
+        for(Employee item : employees){
+        	list.put(item.id, item);
+        }
+        return getImportance(list, id);
+    }
+	private int getImportance(HashMap<Integer, Employee> employees, int id){
+		Employee employee = employees.get(id);
+		int importance = employee.importance;
+		if(employee.subordinates!=null && employee.subordinates.size()!=0){
+			for(int ids : employee.subordinates){
+				importance += getImportance(employees, ids);
+			}
+		}
+		return importance;
+	}
+	
+	//598. Range Addition II
+    public int maxCount(int m, int n, int[][] ops) {
+        if(ops==null || ops.length==0) return m*n;
+        int[] ans = new int[]{ops[0][0],ops[0][1]};
+        for(int[] a : ops){
+        	if(a[0]<ans[0]){
+                    ans[0] = a[0];
+                }
+            if(a[1]<ans[1]){
+                    ans[1] = a[1];
+                }
+        }
+        return ans[0]*ans[1];
+    }
+    
+	
+	//492. Construct the Rectangle
+    public int[] constructRectangle(int area) {
+    	if(area == 1)  return new int[]{1,1};
+        int sq = (int)Math.sqrt((double)area);
+        if(sq*sq == area) return new int[]{sq,sq};
+        sq++;
+        while(((int)(area/sq))*sq != area){
+        	sq++;
+        }
+        return new int[]{sq,area/sq};
+    }
+	
+	
+	//538. Convert BST to Greater Tree
+    public TreeNode convertBST(TreeNode root) {
+        Stack<Integer> stack = new Stack<>();
+        save(root, stack);
+        change(root, stack);
+        return root;
+    }
+    private void save(TreeNode node, Stack<Integer> stack){
+    	if(node == null)
+    		return ;
+    	save(node.right, stack);
+    	if(stack.isEmpty()){
+    		stack.push(node.val);
+    	}else{
+        	stack.push(node.val+stack.peek());
+    	}
+    	save(node.left, stack);
+    }
+    private void change(TreeNode node, Stack<Integer> stack){
+    	if(node == null)
+    		return ;
+    	change(node.left, stack);
+    	node.val = stack.pop();
+    	change(node.right, stack);
+    }
+    
+    
+	
+	//606. Construct String from Binary Tree
+    public String tree2str(TreeNode t) {
+        StringBuilder string = new StringBuilder();
+        tree2str(t, string);
+        return string.toString();
+    }
+    private void tree2str(TreeNode t, StringBuilder string){
+    	if(t==null){
+    		return ;
+    	}
+    	string.append(t.val);
+    	if(t.left != null){
+    		string.append("(");
+    		tree2str(t.left, string);
+    		string.append(")");
+    		if(t.right != null){
+    			string.append("(");
+        		tree2str(t.right, string);
+        		string.append(")");
+    		}
+    	}else if(t.right != null){
+    		string.append("()(");
+    		tree2str(t.right, string);
+    		string.append(")");
+    	}
+    }
+    
 	
 	//283. Move Zeroes
     public void moveZeroes(int[] nums) {
@@ -731,3 +908,17 @@ class TreeNode {
     TreeNode right;
     TreeNode(int x) { val = x; }
 }
+class Employee {
+    // It's the unique id of each node;
+    // unique id of this employee
+    public int id;
+    // the importance value of this employee
+    public int importance;
+    // the id of direct subordinates
+    public List<Integer> subordinates;
+}
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) { val = x; }
+ }
