@@ -3,12 +3,17 @@ package com.leetcode;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Stack;
 import java.util.stream.Collectors;
+
+import com.dataStructures.tree.BinaryTree;
 
 
 
@@ -17,17 +22,264 @@ public class Solution {
 
 	public static void main(String arg[]){
 		System.out.println("");
-		Solution solution = new Solution();
-		System.out.println(-137%10);
 		
+		BinaryTree<Integer> tree = new BinaryTree<>(5);
+		for(int i=0; i<20; i++)
+			tree.insert(i);
+		tree.printElement();
+		
+		
+		Solution solution = new Solution();
+		int[] nums = new int[]{6,99,4,68,8,7,8,8,74,8,0,1,89};
+		//solution.quickSort(nums, 0, nums.length-1);
+		//System.out.println(solution.canConstruct("dr64bS;[]", "dr64bS;[]"));
 	}
+	
+	//404. Sum of Left Leaves
+	private int sumOfLeft=0;
+    public int sumOfLeftLeaves(TreeNode root) {
+        traverse(root, false);
+        return sumOfLeft;
+    }
+    private void traverse(TreeNode node, boolean isLeft){
+        if(node==null)
+            return;
+    	if(node.left==null&&node.right==null&&isLeft)
+            sumOfLeft+=node.val;
+    	traverse(node.left, true);
+    	traverse(node.right, false);
+    }
+	
+	//530. Minimum Absolute Difference in BST
+	/*
+	 * online answer: 
+	 * What if it is not a BST? (Follow up of the problem) The  idea is to put values in a TreeSet and then every time we can use O(lgN)
+	 * time to lookup for the nearest values.
+	 * 
+	 * 
+	 * public class Solution {
+	 *      TreeSet<Integer> set = new TreeSet<>();
+	 *      int min = Integer.MAX_VALUE;
+	 * 
+	 *      public int getMinimumDifference(TreeNode root) { 
+	 *          if (root == null) 
+	 *              return min;
+	 *          if (!set.isEmpty()) {
+	 *              if (set.floor(root.val) != null) {
+	 *                 min =  Math.min(min, root.val - set.floor(root.val));
+	 *                 } 
+	 *              if (set.ceiling(root.val) != null) { 
+	 *                 min = Math.min(min,set.ceiling(root.val) - root.val);
+	 *                  }
+	 *              }
+	 *          set.add(root.val);
+	 *          getMinimumDifference(root.left); 
+	 *          getMinimumDifference(root.right);
+	 *          return min;
+	 *          }
+	 *     }
+	 * 
+	 */
+    public int getMinimumDifference(TreeNode root) {
+        Queue<Integer> queue = new LinkedList<>();
+        DFS(root, queue);
+        int temp = queue.poll();
+        int min = queue.peek()-temp;
+        while(!queue.isEmpty()){
+        	min = Math.min(min, queue.peek()-temp);
+        	temp = queue.poll();
+        }
+        return min;
+    }
+    private void DFS(TreeNode node, Queue<Integer> queue){
+    	if(node==null)
+    		return ;
+    	DFS(node.left, queue);
+    	queue.offer(node.val);
+    	DFS(node.right, queue);
+    }
+	
+	//122. Best Time to Buy and Sell Stock II
+    public int maxProfit(int[] prices) {
+    	if(prices==null || prices.length==0)
+    		return 0;
+        int profit=0, current=prices[0];
+        for(int i=1; i<prices.length; i++){
+        	if(prices[i] < prices[i-1]){
+        		profit+=(prices[i-1]-current);
+        		current = prices[i];
+        	}else if(i==prices.length-1){
+        		profit+=prices[i]-current;
+        	}
+        }
+        return profit;
+    }
+	
+	//383. Ransom Note
+	/* Online answer :
+	 * public boolean canConstruct(String ransomNote, String magazine) {
+        int[] arr = new int[26];
+        for (int i = 0; i < magazine.length(); i++) {
+            arr[magazine.charAt(i) - 'a']++;
+        }
+        for (int i = 0; i < ransomNote.length(); i++) {
+            if(--arr[ransomNote.charAt(i)-'a'] < 0) {
+                return false;
+            }
+        }
+        return true;
+       }
+	 * 
+	 */
+    public boolean canConstruct(String ransomNote, String magazine) {
+    	if(ransomNote==null || ransomNote.length()==0)
+    		return true;
+    	HashMap<Character, Integer> maga = new HashMap<>();
+        for(char c : magazine.toCharArray())
+        	if(maga.containsKey(c))
+        		maga.put(c, maga.get(c).intValue()+1);
+        	else
+        		maga.put(c, 1);
+        int i=0;
+        System.out.println(ransomNote.length());
+        for(char c=ransomNote.charAt(i); i<ransomNote.length(); i++){
+        	c=ransomNote.charAt(i);
+        	if(maga.containsKey(c)){
+        		maga.put(c, maga.get(c).intValue()-1);
+        		if(maga.get(c).intValue()==0)
+        			maga.remove(c);
+        	}else{
+        		System.out.println("???");
+				break;
+			}
+        }
+        if(i==ransomNote.length())
+        	return true;
+        return false;
+    }
+	
+	//349. Intersection of Two Arrays
+    public int[] intersection(int[] nums1, int[] nums2) {
+        HashSet<Integer> set1 = new HashSet<Integer>();
+        HashSet<Integer> set2 = new HashSet<>();
+        for(int n : nums1)
+        	set1.add(n);
+        for(int n : nums2)
+        	set2.add(n);
+        set1.retainAll(set2);
+        Integer[] num = set1.toArray(new Integer[0]);
+        int[] ans = new int[num.length];
+        for(int i=0; i<num.length; i++)
+        	ans[i]=num[i];
+        return ans;
+    }
+	
+	//453. Minimum Moves to Equal Array Elements
+	//Time Limit Exceeded
+    public int minMoves(int[] nums) {
+        int length = nums.length;
+        nums = quickSort(nums, 0, length-1);
+        System.out.println(Arrays.toString(nums));
+        int time = 0;
+        while(nums[0]!=nums[length-1]){
+        	for(int i=length-1; i>=0; i--){
+        		nums[i]-=nums[0];
+        	}
+        	for(int i=0; i<length-1; i++){
+        		nums[i]++;
+        	}
+        	if(nums[0] == nums[length-1]);
+        		nums = quickSort(nums, 0, length-1);
+        	time++;
+        }
+        return time;
+    }
+    public int[] quickSort(int[] nums,int min,int max){
+    	if(nums==null || nums.length==0 || min == max)
+    		return nums;
+    	if(max-min==1 && nums[max]<nums[min]){
+    		int temp = nums[min];
+    		nums[min] = nums[max];
+    		nums[max] = temp;
+    		return nums;
+    	}
+    	int key = nums[min];
+    	int i=min+1, j=max ,position=min;
+    	while(i<j){
+    		for(;;i++)
+    			if(nums[i]>key || i==j)
+    				break;
+    			else{
+    				swap(nums, position, i);
+    				position = i;
+    			}
+    				
+    		for(;;j--)
+    			if(nums[j]<=key || i==j)
+    				break;
+    		swap(nums, i, j);
+    		if(i==j){
+        		if(nums[i] < key){
+        			swap(nums, position, i);
+        			position = i;
+        		}
+        		else{
+        			swap(nums, position, i-1);
+        			position = i-1;
+        		}
+        		break;
+        	}
+    		i++;
+    		j--;
+    	}
+    	if(i!=j){
+    		swap(nums, position, j);
+    		position = j;
+    	}
+    	System.out.println(Arrays.toString(nums));
+    	if(position>min)
+    		quickSort(nums, min, position-1);
+    	if(position<max)
+    		quickSort(nums, position+1, max);
+    	return nums;
+    }
+    private void swap(int[] nums, int a, int b){
+    	int temp = nums[a];
+    	nums[a] = nums[b];
+    	nums[b] = temp;
+    }	
+	
+	//168. Excel Sheet Column Title
+    public String convertToTitle(int n) {
+    	StringBuilder answer = new StringBuilder();
+        while(n != 0){
+        	int remainder = n%26 ;
+        	if(remainder == 0){
+        		answer.append("Z");
+        	}else{
+        		answer.append((char)(remainder+64));
+        	}
+        	n=n/26;
+        }
+        return answer.reverse().toString();
+    }
+	
+	//171. Excel Sheet Column Number
+    public int titleToNumber(String s) {
+    	char[] c = s.toCharArray();
+    	long answer = 0;
+        for(int i=s.length()-1; i>=0; i--){
+        	answer += (c[i]-64)*Math.pow(26, s.length()-1-i);
+        }
+        return (int)answer;
+    }
 	
 	//2. Add Two Numbers
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         ListNode temp = new ListNode(0);
         ListNode answer = temp;
         int carry = 0;
-        while(l1!=null || l2!=null){
+        while(l1!=null || l2!=null || carry!=0){
         	temp.next = new ListNode(0);
         	temp = temp.next;
         	if(l1==null)
