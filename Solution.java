@@ -35,6 +35,40 @@ public class Solution {
 		//System.out.println(solution.canConstruct("dr64bS;[]", "dr64bS;[]"));
 	}
 	
+	//167. Two Sum II - Input array is sorted
+    public int[] twoSum(int[] numbers, int target) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int[] answer = new int[2];
+        for(int i=1; i<numbers.length+1; i++)
+        	map.put(numbers[i-1], i);
+        for(int i=0; i<numbers.length; i++){
+        	if(map.containsKey(target-numbers[i])){
+        		answer[0] = i+1;
+        		answer[1] = map.get(target-numbers[i]);
+        		break;
+        	}
+        }
+        if(answer[0]==answer[1]){
+        	answer = new int[2];	
+        }
+        return answer;
+    }
+	
+	//455. Assign Cookies
+    public int findContentChildren(int[] g, int[] s) {
+        int num=0;
+        Arrays.sort(g);
+        Arrays.sort(s);
+        for(int i=0, j=0; i<g.length; i++)
+        	for(; j<s.length; j++)
+        		if(g[i]<=s[j]){
+        			num++;
+        			j++;
+        			break;
+        		}
+        return num;
+    }
+	
 	//404. Sum of Left Leaves
 	private int sumOfLeft=0;
     public int sumOfLeftLeaves(TreeNode root) {
