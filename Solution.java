@@ -35,6 +35,46 @@ public class Solution {
 		//System.out.println(solution.canConstruct("dr64bS;[]", "dr64bS;[]"));
 	}
 	
+	//169. Majority Element
+	/*
+	 * clever solution on leetcode
+	 * 
+	 *  public int majorityElement(int[] nums) {
+            Arrays.sort(nums);
+	        return nums[nums.length/2];
+    }
+	 */
+    public int majorityElement(int[] nums) {
+        Arrays.sort(nums);
+        int[] n = new int[]{nums[0],1};
+        int halfLength = nums.length/2;
+        for(int i=1; i<nums.length; i++){
+        	if(n[0] != nums[i]){
+        		if(n[1] >= halfLength)
+        			return n[0];
+        		else
+        			n = new int[]{nums[i],1};
+        	}else{
+        		n[1]++;
+        	}
+        }
+        return n[0];
+    }
+	
+	//563. Binary Tree Tilt
+    public int findTilt(TreeNode root) {
+    	if(root==null)
+    		return 0;
+        int tilt = findTilt(root.left)+findTilt(root.right);
+        root.val+=(valueOfNode(root.left)+valueOfNode(root.right));
+        return tilt + Math.abs(valueOfNode(root.left)-valueOfNode(root.right));  
+    }
+    private int valueOfNode(TreeNode node){
+        if(node == null)
+            return 0;
+        return node.val;
+    }
+	
 	//167. Two Sum II - Input array is sorted
     public int[] twoSum(int[] numbers, int target) {
         HashMap<Integer, Integer> map = new HashMap<>();
