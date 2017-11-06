@@ -21,19 +21,96 @@ public class Solution {
 	private TreeNode root = null;
 
 	public static void main(String arg[]){
-		System.out.println("");
-		
-		BinaryTree<Integer> tree = new BinaryTree<>(5);
-		for(int i=0; i<20; i++)
-			tree.insert(i);
-		tree.printElement();
-		
-		
-		Solution solution = new Solution();
-		int[] nums = new int[]{6,99,4,68,8,7,8,8,74,8,0,1,89};
-		//solution.quickSort(nums, 0, nums.length-1);
-		//System.out.println(solution.canConstruct("dr64bS;[]", "dr64bS;[]"));
+		String string = "来动阿萨德s";
+		char[] array = string.toCharArray();
+		for(char c : array)
+			System.out.println(c);
 	}
+	
+	//217. Contains Duplicate
+    public boolean containsDuplicate(int[] nums) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int n : nums)
+        	if(!map.containsKey(n))
+        		map.put(n, 1);
+        	else 
+        		return false;
+        return true;
+    }
+	
+	//506. Relative Ranks
+    public String[] findRelativeRanks(int[] nums) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i=0; i<nums.length; i++)
+        	map.put(nums[i], i);
+        Arrays.sort(nums);
+        String[] ans = new String[nums.length];
+        for(int i=nums.length-1; i>=0; i--){
+        	if(i==nums.length-1)
+        		ans[map.get(nums[i])]="Gold Medal";
+        	else if(i==nums.length-2)
+        		ans[map.get(nums[i])]="Silver Medal";
+        	else if(i==nums.length-3)
+        		ans[map.get(nums[i])]="Bronze Medal";
+        	else
+        		ans[map.get(nums[i])]=Integer.toString(nums.length-i+1);
+        }
+        return ans;
+        	
+    }
+	
+	//242. Valid Anagram
+    public boolean isAnagram(String s, String t) {
+    	if(s==null && t==null)
+    		return true;
+    	if(s==null || t==null || s.length()!=t.length())
+    		return false;
+        char[] arrayS = s.toCharArray();
+        char[] arrayT = t.toCharArray();
+        HashMap<Character, Integer> map = new HashMap<>();
+        for(int i=0; i<arrayS.length; i++){
+        	char ss = arrayS[i], tt = arrayT[i];
+        	if(!map.containsKey(ss))
+        		map.put(ss, 1);
+        	else
+        		map.put(ss, map.get(ss)+1);
+        	if(!map.containsKey(tt))
+        		map.put(tt, -1);
+        	else
+        		map.put(tt, map.get(tt)-1);
+        }
+        for(char c : arrayS)
+        	if(map.get(c)!=0)
+        		return false;
+        return true;
+    }
+	
+	//100. Same Tree
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+    	if(p==null&&q==null){
+    		return true;
+    	}else{
+    		try{
+    			int n = p.val;
+    			n=q.val;
+    		}catch (Exception e) {
+				return false;
+			}
+    	}
+        return isSameTree(p.left, q.left)&&isSameTree(p.right, q.right)&&p.val==q.val;
+    }
+	
+	//387. First Unique Character in a String
+    public int firstUniqChar(String s) {
+        int[] letter = new int[26];
+        char[] charArray = s.toCharArray();
+        for(char c : charArray)
+        	letter[c-97]++;
+        for(int i=0; i<charArray.length; i++)
+        	if(letter[charArray[i]-97]==1)
+        		return i;
+        return -1;
+    }
 	
 	//169. Majority Element
 	/*
