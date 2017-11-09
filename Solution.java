@@ -21,11 +21,147 @@ public class Solution {
 	private TreeNode root = null;
 
 	public static void main(String arg[]){
-		String string = "来动阿萨德s";
-		char[] array = string.toCharArray();
-		for(char c : array)
-			System.out.println(c);
+		
+		Solution solution =  new Solution();
+		solution.findShortestSubArray(new int[]{1,2,2,3,1});
 	}
+	
+	//697. Degree of an Array
+    public int findShortestSubArray(int[] nums) {
+    	int n=1;
+    	ArrayList<Integer> list = new ArrayList<>();
+        HashMap<Integer, Integer[]> map = new HashMap<>();
+        for(int i=0; i<nums.length; i++){
+        	if(!map.containsKey(nums[i])){
+        		map.put(nums[i], new Integer[]{1,i,0});
+        	}else{
+        		Integer[] temp = map.get(nums[i]);
+        		map.put(nums[i], new Integer[]{++temp[0],temp[1],i});
+        		temp = map.get(nums[i]);
+        		if(temp[0]>n){
+        			list = new ArrayList<>();
+        			list.add(nums[i]);
+        			n = temp[0];
+        		}else if(temp[0] == n){
+        			list.add(nums[i]);
+        		}
+        	}
+        }
+        if(list.size()==0)
+            return 1;
+        int ans = Integer.MAX_VALUE;
+        for(int i=0 ; i<list.size(); i++){
+        	Integer[] temp = map.get(list.get(i));
+         	if(ans > temp[2] - temp[1])
+         		ans = temp[2] -temp[1];
+        }
+        return ans + 1;
+    }
+	
+	
+	//476. Number Complement
+    public int findComplement(int num) {
+    	int ans = 0;
+    	int order = 0 , n = num;
+    	while(n >>> 1 !=0)
+    		order++;
+    	num = ~num;
+    	while(order>0){
+    		ans = (ans << 1)+(num & 1);
+    		num>>>=1;
+    		order--;
+    	}
+    	return ans;
+    }
+	
+	//561. Array Partition I
+    public int arrayPairSum(int[] nums) {
+        Arrays.sort(nums);
+        int ans=0;
+        for(int i=0; i<nums.length; i+=2)
+        	ans+=nums[i];
+        return ans;
+    }
+    
+	
+	//717. 1-bit and 2-bit Characters
+	/*
+	 * a faster solution on leetcode by using Greedy Algorithm
+	 * 
+	 *public boolean isOneBitCharacter(int[] bits) {
+          int i = bits.length - 2;
+          while (i >= 0 && bits[i] > 0) i--;
+          return (bits.length - i) % 2 == 0;
+      }
+	 * 
+	 */
+    public boolean isOneBitCharacter(int[] bits) {
+        int  i=0;
+        while(i<bits.length-1){
+        	if(bits[i] == 1)
+        		i+=2;
+        	else
+        		i++;
+        }
+        if(i == bits.length-1)
+        	return true;
+        return false;
+    }
+	
+	//599. Minimum Index Sum of Two Lists
+    public String[] findRestaurant(String[] list1, String[] list2) {
+    	
+    	if(list1==null||list2==null||list1.length==0||list2.length==0)
+    		return new String[0];
+        HashMap<String , Integer> map = new HashMap<>();
+        for(int i=0; i<list1.length; i++)
+        	map.put(list1[i], i);
+        int index = Integer.MAX_VALUE;
+        ArrayList<String> ans = new ArrayList<>();
+        for(int i=0; i<list2.length; i++)
+        	if(map.containsKey(list2[i])){
+        		if(index > map.get(list2[i])+i){
+        			ans.clear();
+        			ans.add(list2[i]);
+        			index = map.get(list2[i])+i;
+        		}else if(index == map.get(list2[i])+i){
+        			ans.add(list2[i]);
+        		}
+        	}
+        return ans.toArray(new String[0]);
+    }
+	
+	//206. Reverse Linked List
+	/*
+	 * public ListNode reverseList(ListNode head) {//iteratively version
+    	if(head == null)
+    		return head;
+        ListNode  node = head.next , temp=null;
+        head.next=null;
+        while(node!=null){
+        	temp = node.next;
+        	node.next = head;
+        	head = node;
+        	node = temp;
+        }
+        return head;
+    }
+	 */
+    private ListNode head;
+    public ListNode reverseList(ListNode head) {//recursively version
+    	reverseList(head, head).next = null;
+    	return this.head;
+    }
+    public ListNode reverseList(ListNode node , ListNode head){
+    	if(node == null)
+    		return null;
+    	if(node.next == null){
+    		this.head = node;
+    		return node;
+    	}
+    	reverseList(node.next , head).next = node;
+    	return node;
+    }
 	
 	//217. Contains Duplicate
     public boolean containsDuplicate(int[] nums) {
@@ -1150,38 +1286,7 @@ public class Solution {
             t.right=mergeTrees(t1.right, t2.right);
             return t;
     	}  
-    }
-	
-    
-    //
-    public int findComplement(int num) {
-    	//if(true) return ~num & ((Integer.highestOneBit(num) << 1) - 1);//leetcode上的discussion
-    	int value = 0;
-        for(int i=31; i>=0; i--){
-        	int n=num;
-        	n>>>=i;
-        	if(n==0){
-        		System.out.println(n+"!");
-        		continue;
-        	}else{
-        		value=i;
-        		break;
-        	}
-        }
-        int number = 0;
-        for(;value>=0;value--){
-        	int n = num;
-        	if(((n>>>=value)&1)==0){
-        		number<<=1;
-        		number++;
-        	}else{
-        		number<<=1;
-        	}
-        }
-        return number;
-    }
-    
-    
+    } 
     
 	//657. Judge Route Circle
     public boolean judgeCircle(String moves) {
@@ -1288,20 +1393,6 @@ public class Solution {
     	
     }
 	
-	
-	//1. Two Sum
-	public int maximumSwap(int num) {
-		String n = String.valueOf(num);
-		System.out.println(n.charAt(0));
-        int first = n.charAt(0)-48;
-        for(int i=9; i>=0; i--){
-        	int position = n.indexOf(i+48);
-        	if(position != -1){
-        		
-        	}
-        }
-        return 0;
-    }
 
 }
 
