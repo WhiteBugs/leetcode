@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
 import java.util.stream.Collectors;
@@ -23,8 +24,102 @@ public class Solution {
 	public static void main(String arg[]){
 		
 		Solution solution =  new Solution();
-		solution.findShortestSubArray(new int[]{1,2,2,3,1});
+		solution.imageSmoother(new int[][]{{1,1,1},{1,0,1},{1,1,1}});
 	}
+	
+	//453. Minimum Moves to Equal Array Elements
+	public int minMoves(int[] nums){
+		Arrays.sort(nums);
+		int base = nums[0];
+		for(int i=0; i<nums.length; i++)
+			nums[i]-=base;
+		int answer=0;
+		for(int i : nums)
+			answer+=i;
+		return answer;
+	}
+	
+	//409. Longest Palindrome
+    public int longestPalindrome(String s) {
+    	if(s==null | s.length()==0)
+    		return 0;
+        int answer = 0 ;
+        boolean single = false;
+        HashMap<Character, Integer> map = new HashMap<>();
+        for(char c : s.toCharArray())
+        	map.put(c, map.getOrDefault(c, 0)+1);
+        for(Map.Entry<Character, Integer> entry : map.entrySet())
+        	if(((int)entry.getValue()%2)==0)
+        		answer+=entry.getValue();
+        	else{
+        		single = true;
+        		answer+=entry.getValue()-1;
+        	}	
+        return single? answer+1 : answer;
+    }
+	
+	//628. Maximum Product of Three Numbers
+    public int maximumProduct(int[] nums) {
+    	Arrays.sort(nums);
+        int[] left = new int[]{nums[0],nums[1]};
+        int length = nums.length;
+        int[] right = new int[]{nums[length-3],nums[length-2],nums[length-1]};
+        return right[2]*Math.max(left[0]*left[1], right[0]*right[1]);
+    }
+	
+	//661. Image Smoother
+	public int[][] imageSmoother(int[][] M) {
+        if(M.length==0||M[0].length==0)
+        	return M;
+        int[][] m = new int[M.length][M[0].length];
+        if(M.length==1 && M[0].length==1)
+        	return M;
+        if(M.length==1){
+        	m[0][0] = (M[0][0]+M[0][1])/2;
+        	m[0][M[0].length-1] = (M[0][M[0].length-2]+M[0][M[0].length-1])/2;
+        	for(int i=1; i<M[0].length-1; i++){
+        		m[0][i] = (M[0][i-1]+M[0][i]+M[0][i+1])/3;
+        	}
+            return m;
+        }
+        if(M[0].length==1){
+        	m[0][0] = (M[0][0]+M[1][0])/2;
+        	m[M.length-1][0] = (M[M.length-2][0]+M[M.length-1][0])/2;
+        	for(int i=1; i<M.length-1; i++){
+        		m[i][0] = (M[i-1][0]+M[i][0]+M[i+1][0])/3;
+        	}
+            return m;
+        }
+        for(int i=0; i<M.length; i++)
+        	for(int j=0; j<M[0].length; j++){
+        		if(i==0){
+        			if(j==0){
+        				m[i][j] = (M[i][j]+M[i+1][j]+M[i][j+1]+M[i+1][j+1])/4;
+        			}else if(j==M[0].length-1){
+        				m[i][j] = (M[i][j]+M[i+1][j]+M[i+1][j-1]+M[i][j-1])/4;
+        			}else{
+        				m[i][j] = (M[i][j-1]+M[i][j]+M[i][j+1]+M[i+1][j-1]+M[i+1][j]+M[i+1][j+1])/6;
+        			}
+        		}else if(i==M.length-1){
+        			if(j==0){
+        				m[i][j] = (M[i][j]+M[i-1][j]+M[i-1][j+1]+M[i][j+1])/4;
+        			}else if(j==M[0].length-1){
+        				m[i][j] = (M[i][j]+M[i][j-1]+M[i-1][j-1]+M[i-1][j])/4;
+        			}else{
+        				m[i][j] = (M[i][j-1]+M[i][j]+M[i][j+1]+M[i-1][j-1]+M[i-1][j]+M[i-1][j+1])/6;
+        			}
+        		}else{
+        			if(j==0){
+        				m[i][j] = (M[i-1][j]+M[i-1][j+1]+M[i][j]+M[i][j+1]+M[i+1][j]+M[i+1][j+1])/6;
+        			}else if(j==M[0].length-1){
+        				m[i][j] = (M[i-1][j-1]+M[i-1][j]+M[i][j-1]+M[i][j]+M[i+1][j-1]+M[i+1][j])/6;
+        			}else{
+        				m[i][j] = (M[i-1][j-1]+M[i-1][j]+M[i-1][j+1]+M[i][j-1]+M[i][j]+M[i][j+1]+M[i+1][j-1]+M[i+1][j]+M[i+1][j+1])/9;
+        			}
+        		}
+        	}
+    	return m;
+    }
 	
 	//697. Degree of an Array
     public int findShortestSubArray(int[] nums) {
@@ -459,81 +554,6 @@ public class Solution {
         for(int i=0; i<num.length; i++)
         	ans[i]=num[i];
         return ans;
-    }
-	
-	//453. Minimum Moves to Equal Array Elements
-	//Time Limit Exceeded
-    public int minMoves(int[] nums) {
-        int length = nums.length;
-        nums = quickSort(nums, 0, length-1);
-        System.out.println(Arrays.toString(nums));
-        int time = 0;
-        while(nums[0]!=nums[length-1]){
-        	for(int i=length-1; i>=0; i--){
-        		nums[i]-=nums[0];
-        	}
-        	for(int i=0; i<length-1; i++){
-        		nums[i]++;
-        	}
-        	if(nums[0] == nums[length-1]);
-        		nums = quickSort(nums, 0, length-1);
-        	time++;
-        }
-        return time;
-    }
-    public int[] quickSort(int[] nums,int min,int max){
-    	if(nums==null || nums.length==0 || min == max)
-    		return nums;
-    	if(max-min==1 && nums[max]<nums[min]){
-    		int temp = nums[min];
-    		nums[min] = nums[max];
-    		nums[max] = temp;
-    		return nums;
-    	}
-    	int key = nums[min];
-    	int i=min+1, j=max ,position=min;
-    	while(i<j){
-    		for(;;i++)
-    			if(nums[i]>key || i==j)
-    				break;
-    			else{
-    				swap(nums, position, i);
-    				position = i;
-    			}
-    				
-    		for(;;j--)
-    			if(nums[j]<=key || i==j)
-    				break;
-    		swap(nums, i, j);
-    		if(i==j){
-        		if(nums[i] < key){
-        			swap(nums, position, i);
-        			position = i;
-        		}
-        		else{
-        			swap(nums, position, i-1);
-        			position = i-1;
-        		}
-        		break;
-        	}
-    		i++;
-    		j--;
-    	}
-    	if(i!=j){
-    		swap(nums, position, j);
-    		position = j;
-    	}
-    	System.out.println(Arrays.toString(nums));
-    	if(position>min)
-    		quickSort(nums, min, position-1);
-    	if(position<max)
-    		quickSort(nums, position+1, max);
-    	return nums;
-    }
-    private void swap(int[] nums, int a, int b){
-    	int temp = nums[a];
-    	nums[a] = nums[b];
-    	nums[b] = temp;
     }	
 	
 	//168. Excel Sheet Column Title
