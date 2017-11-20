@@ -27,6 +27,22 @@ public class Solution {
 		solution.imageSmoother(new int[][]{{1,1,1},{1,0,1},{1,1,1}});
 	}
 	
+	//543. Diameter of Binary Tree
+    public int diameterOfBinaryTree(TreeNode root) {
+        int[] save = new int[1];
+        diameterOfBinaryTree(root , save);
+        return save[0];
+    }
+    private int diameterOfBinaryTree(TreeNode node , int[] save ){
+    	if(node == null)
+    		return 0;
+    	int left , right;
+    	left = diameterOfBinaryTree(node.left , save);
+    	right = diameterOfBinaryTree(node.right, save);
+    	save[0] = Math.max(save[0], left + right);
+    	return Math.max(left , right)+1;
+    }
+	
 	//453. Minimum Moves to Equal Array Elements
 	public int minMoves(int[] nums){
 		Arrays.sort(nums);
