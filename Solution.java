@@ -3,6 +3,7 @@ package com.leetcode;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
@@ -24,8 +25,137 @@ public class Solution {
 	public static void main(String arg[]){
 		
 		Solution solution =  new Solution();
-		solution.imageSmoother(new int[][]{{1,1,1},{1,0,1},{1,1,1}});
+		int i = solution.maxProfit2(new int[]{7, 1, 6, 4, 3, 1, 7});
+		System.out.println(i);
 	}
+	
+	
+	//108. Convert Sorted Array to Binary Search Tree
+    public TreeNode sortedArrayToBST(int[] nums) {
+    	if(nums==null || nums.length==0)
+    		return null;
+        return sortedArrayToBST(nums, 0, nums.length-1);
+    }
+    private TreeNode sortedArrayToBST(int[] nums , int left , int right) {
+    	if(left>right)
+    		return null;
+    	if(left==right)
+    		return new TreeNode(nums[left]);
+    	int middle = (left+right)/2;
+    	TreeNode node = new TreeNode(nums[middle]);
+    	node.left = sortedArrayToBST(nums, left, middle-1);
+    	node.right = sortedArrayToBST(nums, middle+1, right);
+    	return node;
+    }
+	
+	//674. Longest Continuous Increasing Subsequence
+    public int findLengthOfLCIS(int[] nums) {
+    	if(nums==null||nums.length==0)
+    		return 0;
+        int piv=1 , max=1;
+    	for(int i=1; i<nums.length; i++){
+    		if(nums[i] > nums[i-1])
+    			piv++;
+    		else{
+    			max=Math.max(max, piv);
+    			piv=1;
+    		}
+    	}
+    	return Math.max(max, piv);
+    }
+	
+	//121. Best Time to Buy and Sell Stock
+    public int maxProfit2(int[] prices) {
+    	int max=0 ;
+    	for(int i=0 ; i<prices.length; i++)
+    		for(int j=i+1; j<prices.length; j++){
+    			if(prices[j]>prices[i])
+    				max = Math.max(max, prices[j]-prices[i]);
+    		}
+    	return max;
+    }
+	
+	//350. Intersection of Two Arrays II
+    public int[] intersect(int[] nums1, int[] nums2) {
+        ArrayList<Integer> list = new ArrayList<>();
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i : nums1)
+        	map.put(i, map.getOrDefault(i, 0)+1);
+        for(int i: nums2)
+        	if(map.containsKey(i) && map.get(i)!=0){
+        		list.add(i);
+        		map.put(i, map.get(i)-1);
+        	}
+        int[] ans = new int[list.size()];
+        for(int i=0; i<list.size(); i++)
+        	ans[i] = list.get(i);
+        return ans;
+    }
+	
+	//504. Base 7
+    public String convertToBase7(int num) {
+    	if(num == 0)
+    		return "0";
+        int value = Math.abs(num);
+        StringBuilder string = new StringBuilder();
+        while(value != 0){
+        	string.append(value%7);
+        	value/=7;
+        }
+        if( num < 0)
+        	string.append("-");
+        return string.reverse().toString();
+    }
+	
+	//Reverse String II
+    public String reverseStr(String s, int k) {
+    	if(k<=0 || s==null || s.length()==0)
+    		return s;
+        StringBuilder list = new StringBuilder();
+        Stack<Character> stack = new Stack<>();
+        for(int i=0,count=1; i<s.length(); i++){
+        	if(count <= k)
+        		stack.push(s.charAt(i));
+        	if(count == k){
+        		while(!stack.isEmpty())
+        			list.append(stack.pop());
+        	}else if(k < count && count <= 2*k ){
+        		list.append(s.charAt(i));
+        		if(count == 2*k)
+        			count = 0;
+        	}
+        	count++;
+        }
+        while(!stack.isEmpty())
+			list.append(stack.pop());
+        return list.toString();
+    }
+	
+	//551. Student Attendance Record I
+    public boolean checkRecord(String s) {
+    	int a=0 , l=0 , max=0;
+        for(char c : s.toCharArray()){
+        	if(c == 'A'){
+        		a++;
+        		l=0;
+        	}else if(c == 'L'){
+        		l++;
+        		max = Math.max(max, l);
+        	}else{
+        		l=0;
+        	}
+        }
+        return a<2&&max<3;
+    }
+	
+	
+	//268. Missing Number
+    public int missingNumber(int[] nums) {
+    	int answer = 0 , i=0;
+    	for( ; i<nums.length; i++)
+    		answer+=(i-nums[i]);
+        return answer+i;
+    }
 	
 	//543. Diameter of Binary Tree
     public int diameterOfBinaryTree(TreeNode root) {
