@@ -29,6 +29,62 @@ public class Solution {
 		System.out.println(i);
 	}
 	
+	//107. Binary Tree Level Order Traversal II
+	public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        ArrayList<ArrayList<Integer>> list = new ArrayList();
+        levelOfTree(root , list, 0);
+        ArrayList<List<Integer>> answer = new ArrayList();
+        for(int i=list.size()-1; i>=0; i--)
+            answer.add(list.get(i));
+        return answer;
+    }
+    private void levelOfTree(TreeNode node ,ArrayList<ArrayList<Integer>> list , int level){
+        if(node==null)
+            return ;
+        if(list.size()<level+1)
+            list.add(new ArrayList<Integer>());
+        list.get(level).add(node.val);
+        levelOfTree(node.left , list , level+1);
+        levelOfTree(node.right , list , level+1);
+    }
+	
+	//671. Second Minimum Node In a Binary Tree
+    public int findSecondMinimumValue(TreeNode root) {
+        int val = root.val;
+        return returnValue(root, val);
+    }
+    private int returnValue(TreeNode node , int val){
+        if(node == null)
+            return -1;
+        if(node.val == val){
+            int left = returnValue(node.left ,val);
+            int right = returnValue(node.right , val);
+            if(left!=-1 && right != -1)
+                return Math.min(left, right);
+            return Math.max(left, right);
+        }
+        return node.val;
+    }
+	
+	//415. Add Strings
+    public String addStrings(String num1, String num2) {
+        StringBuilder string = new StringBuilder();
+        int cur=0 , carry=0;
+        for(int i=0; i<Math.max(num1.length(), num2.length()); i++){
+            cur = getInt(num1,num1.length()-1-i) + getInt(num2, num2.length()-1-i) + carry;
+            string.append(cur%10);
+            carry = cur/10;
+        }
+        if(carry != 0)
+            string.append(carry);
+        return string.reverse().toString();
+        
+    }
+    private int getInt(String num , int position){
+        if(position>=num.length()||position<0)
+            return 0;
+        return num.charAt(position)-'0';
+    }
 	
 	//108. Convert Sorted Array to Binary Search Tree
     public TreeNode sortedArrayToBST(int[] nums) {
