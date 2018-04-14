@@ -1,7 +1,7 @@
 package com.leetcode;
 
 /**
- * Create by Jason-Chan on 2018/4/14 14:02 .
+ * Create by WhiteBugs .
  */
 public class CountBinarySubstrings {
     //696. Count Binary Substrings
