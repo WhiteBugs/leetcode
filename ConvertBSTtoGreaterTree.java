@@ -1,5 +1,7 @@
 package com.leetcode;
 
+import com.leetcode.elements.TreeNode;
+
 import java.util.Stack;
 
 /**
@@ -16,20 +18,22 @@ public class ConvertBSTtoGreaterTree {
         change(root, stack);
         return root;
     }
-    private void save(TreeNode node, Stack<Integer> stack){
-        if(node == null)
-            return ;
+
+    private void save(TreeNode node, Stack<Integer> stack) {
+        if (node == null)
+            return;
         save(node.right, stack);
-        if(stack.isEmpty()){
+        if (stack.isEmpty()) {
             stack.push(node.val);
-        }else{
-            stack.push(node.val+stack.peek());
+        } else {
+            stack.push(node.val + stack.peek());
         }
         save(node.left, stack);
     }
-    private void change(TreeNode node, Stack<Integer> stack){
-        if(node == null)
-            return ;
+
+    private void change(TreeNode node, Stack<Integer> stack) {
+        if (node == null)
+            return;
         change(node.left, stack);
         node.val = stack.pop();
         change(node.right, stack);

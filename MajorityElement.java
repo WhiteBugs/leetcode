@@ -19,15 +19,15 @@ public class MajorityElement {
 	 */
     public int majorityElement(int[] nums) {
         Arrays.sort(nums);
-        int[] n = new int[]{nums[0],1};
-        int halfLength = nums.length/2;
-        for(int i=1; i<nums.length; i++){
-            if(n[0] != nums[i]){
-                if(n[1] > halfLength)
+        int[] n = new int[]{nums[0], 1};
+        int halfLength = nums.length / 2;
+        for (int i = 1; i < nums.length; i++) {
+            if (n[0] != nums[i]) {
+                if (n[1] > halfLength)
                     return n[0];
                 else
-                    n = new int[]{nums[i],1};
-            }else{
+                    n = new int[]{nums[i], 1};
+            } else {
                 n[1]++;
             }
         }

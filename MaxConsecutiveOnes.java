@@ -10,9 +10,9 @@ public class MaxConsecutiveOnes {
 
     public int findMaxConsecutiveOnes(int[] nums) {
         int max = 0, another = 0;
-        for(int i : nums){
-            another = i==1? another+1 : 0;
-            if(max<another){
+        for (int i : nums) {
+            another = i == 1 ? another + 1 : 0;
+            if (max < another) {
                 max = another;
             }
         }

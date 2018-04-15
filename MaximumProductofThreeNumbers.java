@@ -12,9 +12,9 @@ public class MaximumProductofThreeNumbers {
 
     public int maximumProduct(int[] nums) {
         Arrays.sort(nums);
-        int[] left = new int[]{nums[0],nums[1]};
+        int[] left = new int[]{nums[0], nums[1]};
         int length = nums.length;
-        int[] right = new int[]{nums[length-3],nums[length-2],nums[length-1]};
-        return right[2]*Math.max(left[0]*left[1], right[0]*right[1]);
+        int[] right = new int[]{nums[length - 3], nums[length - 2], nums[length - 1]};
+        return right[2] * Math.max(left[0] * left[1], right[0] * right[1]);
     }
 }

@@ -1,5 +1,7 @@
 package com.leetcode;
 
+import com.leetcode.elements.TreeNode;
+
 /**
  * Create by WhiteBugs .
  */
@@ -9,16 +11,17 @@ public class DiameterofBinaryTree {
 
     public int diameterOfBinaryTree(TreeNode root) {
         int[] save = new int[1];
-        diameterOfBinaryTree(root , save);
+        diameterOfBinaryTree(root, save);
         return save[0];
     }
-    private int diameterOfBinaryTree(TreeNode node , int[] save ){
-        if(node == null)
+
+    private int diameterOfBinaryTree(TreeNode node, int[] save) {
+        if (node == null)
             return 0;
-        int left , right;
-        left = diameterOfBinaryTree(node.left , save);
+        int left, right;
+        left = diameterOfBinaryTree(node.left, save);
         right = diameterOfBinaryTree(node.right, save);
         save[0] = Math.max(save[0], left + right);
-        return Math.max(left , right)+1;
+        return Math.max(left, right) + 1;
     }
 }

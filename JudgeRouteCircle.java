@@ -13,36 +13,36 @@ public class JudgeRouteCircle {
     public boolean judgeCircle(String moves) {
         Deque<Character> vertical = new ArrayDeque<>();
         Deque<Character> horizontal = new ArrayDeque<>();
-        for(int i=0; i<moves.length(); i++){
+        for (int i = 0; i < moves.length(); i++) {
             switch (moves.charAt(i)) {
                 case 'U':
-                    if(vertical.isEmpty()||vertical.peek()=='U'){
+                    if (vertical.isEmpty() || vertical.peek() == 'U') {
                         vertical.push('U');
-                    }else if(vertical.peek()=='D'){
+                    } else if (vertical.peek() == 'D') {
                         vertical.pop();
                     }
                     break;
 
                 case 'D':
-                    if(vertical.isEmpty()||vertical.peek()=='D'){
+                    if (vertical.isEmpty() || vertical.peek() == 'D') {
                         vertical.push('D');
-                    }else if(vertical.peek()=='U'){
+                    } else if (vertical.peek() == 'U') {
                         vertical.pop();
                     }
                     break;
 
                 case 'R':
-                    if(horizontal.isEmpty()||horizontal.peek()=='R'){
+                    if (horizontal.isEmpty() || horizontal.peek() == 'R') {
                         horizontal.push('R');
-                    }else if(horizontal.peek()=='L'){
+                    } else if (horizontal.peek() == 'L') {
                         horizontal.pop();
                     }
                     break;
 
                 case 'L':
-                    if(horizontal.isEmpty()||horizontal.peek()=='L'){
+                    if (horizontal.isEmpty() || horizontal.peek() == 'L') {
                         horizontal.push('L');
-                    }else if(horizontal.peek()=='R'){
+                    } else if (horizontal.peek() == 'R') {
                         horizontal.pop();
                     }
                     break;
@@ -51,7 +51,7 @@ public class JudgeRouteCircle {
                     break;
             }
         }
-        if(vertical.isEmpty()&&horizontal.isEmpty()){
+        if (vertical.isEmpty() && horizontal.isEmpty()) {
             return true;
         }
         return false;

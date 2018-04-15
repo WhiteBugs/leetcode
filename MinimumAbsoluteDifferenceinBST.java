@@ -1,5 +1,7 @@
 package com.leetcode;
 
+import com.leetcode.elements.TreeNode;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -15,16 +17,17 @@ public class MinimumAbsoluteDifferenceinBST {
         Queue<Integer> queue = new LinkedList<>();
         DFS(root, queue);
         int temp = queue.poll();
-        int min = queue.peek()-temp;
-        while(!queue.isEmpty()){
-            min = Math.min(min, queue.peek()-temp);
+        int min = queue.peek() - temp;
+        while (!queue.isEmpty()) {
+            min = Math.min(min, queue.peek() - temp);
             temp = queue.poll();
         }
         return min;
     }
-    private void DFS(TreeNode node, Queue<Integer> queue){
-        if(node==null)
-            return ;
+
+    private void DFS(TreeNode node, Queue<Integer> queue) {
+        if (node == null)
+            return;
         DFS(node.left, queue);
         queue.offer(node.val);
         DFS(node.right, queue);

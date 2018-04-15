@@ -13,11 +13,11 @@ public class MinimumMovestoEqualArrayElements {
     public int minMoves(int[] nums) {
         Arrays.sort(nums);
         int base = nums[0];
-        for(int i=0; i<nums.length; i++)
-            nums[i]-=base;
-        int answer=0;
-        for(int i : nums)
-            answer+=i;
+        for (int i = 0; i < nums.length; i++)
+            nums[i] -= base;
+        int answer = 0;
+        for (int i : nums)
+            answer += i;
         return answer;
     }
 }

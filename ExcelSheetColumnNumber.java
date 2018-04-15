@@ -11,9 +11,9 @@ public class ExcelSheetColumnNumber {
     public int titleToNumber(String s) {
         char[] c = s.toCharArray();
         long answer = 0;
-        for(int i=s.length()-1; i>=0; i--){
-            answer += (c[i]-64)*Math.pow(26, s.length()-1-i);
+        for (int i = s.length() - 1; i >= 0; i--) {
+            answer += (c[i] - 64) * Math.pow(26, s.length() - 1 - i);
         }
-        return (int)answer;
+        return (int) answer;
     }
 }

@@ -9,18 +9,18 @@ public class StudentAttendanceRecord1 {
     //https://leetcode.com/problems/student-attendance-record-i/descriptio
 
     public boolean checkRecord(String s) {
-        int a=0 , l=0 , max=0;
-        for(char c : s.toCharArray()){
-            if(c == 'A'){
+        int a = 0, l = 0, max = 0;
+        for (char c : s.toCharArray()) {
+            if (c == 'A') {
                 a++;
-                l=0;
-            }else if(c == 'L'){
+                l = 0;
+            } else if (c == 'L') {
                 l++;
                 max = Math.max(max, l);
-            }else{
-                l=0;
+            } else {
+                l = 0;
             }
         }
-        return a<2&&max<3;
+        return a < 2 && max < 3;
     }
 }

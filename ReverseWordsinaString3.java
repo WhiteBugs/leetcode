@@ -10,19 +10,19 @@ public class ReverseWordsinaString3 {
 
     public String reverseWords(String s) {
         String[] items = s.split("\\s+");
-        if(items.length==1){
+        if (items.length == 1) {
             StringBuilder answer = new StringBuilder();
-            for(int i=0; i<items[0].length(); i++){
-                answer.append(items[0].charAt(items[0].length()-i-1));
+            for (int i = 0; i < items[0].length(); i++) {
+                answer.append(items[0].charAt(items[0].length() - i - 1));
             }
             return answer.toString();
-        }else{
+        } else {
             StringBuilder answer = new StringBuilder();
-            for(String item : items){
+            for (String item : items) {
                 answer.append(reverseWords(item));
                 answer.append(" ");
             }
-            answer.deleteCharAt(answer.toString().length()-1);
+            answer.deleteCharAt(answer.toString().length() - 1);
             return answer.toString();
         }
     }

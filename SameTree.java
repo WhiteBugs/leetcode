@@ -1,5 +1,7 @@
 package com.leetcode;
 
+import com.leetcode.elements.TreeNode;
+
 /**
  * Create by WhiteBugs .
  */
@@ -9,16 +11,16 @@ public class SameTree {
     //https://leetcode.com/problems/same-tree/description/
 
     public boolean isSameTree(TreeNode p, TreeNode q) {
-        if(p==null&&q==null){
+        if (p == null && q == null) {
             return true;
-        }else{
-            try{
-                if(p.val!=q.val)
+        } else {
+            try {
+                if (p.val != q.val)
                     return false;
-            }catch (Exception e) {
+            } catch (Exception e) {
                 return false;
             }
         }
-        return isSameTree(p.left, q.left)&&isSameTree(p.right, q.right);
+        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
     }
 }

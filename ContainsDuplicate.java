@@ -11,11 +11,11 @@ public class ContainsDuplicate {
     //https://leetcode.com/problems/contains-duplicate/description/
 
     public boolean containsDuplicate(int[] nums) {
-        if(nums==null)
+        if (nums == null)
             return false;
         HashMap<Integer, Integer> map = new HashMap<>();
-        for(int n : nums)
-            if(!map.containsKey(n))
+        for (int n : nums)
+            if (!map.containsKey(n))
                 map.put(n, 1);
             else
                 return true;

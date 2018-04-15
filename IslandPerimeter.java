@@ -11,25 +11,25 @@ public class IslandPerimeter {
     //因为题干已经说了，只有一个大岛而且没有对角线连接。。。
     public int islandPerimeter(int[][] grid) {
         int length = 0;
-        for(int i=0; i<grid.length; i++){
-            for(int j=0; j<grid[0].length; j++){
-                if(grid[i][j]==1){
-                    length+=4;
-                    try{
-                        length+=grid[i-1][j]==1?-1:0;
-                    }catch (ArrayIndexOutOfBoundsException e) {
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 1) {
+                    length += 4;
+                    try {
+                        length += grid[i - 1][j] == 1 ? -1 : 0;
+                    } catch (ArrayIndexOutOfBoundsException e) {
                     }
-                    try{
-                        length+=grid[i+1][j]==1?-1:0;
-                    }catch (ArrayIndexOutOfBoundsException e) {
+                    try {
+                        length += grid[i + 1][j] == 1 ? -1 : 0;
+                    } catch (ArrayIndexOutOfBoundsException e) {
                     }
-                    try{
-                        length+=grid[i][j-1]==1?-1:0;
-                    }catch (ArrayIndexOutOfBoundsException e) {
+                    try {
+                        length += grid[i][j - 1] == 1 ? -1 : 0;
+                    } catch (ArrayIndexOutOfBoundsException e) {
                     }
-                    try{
-                        length+=grid[i][j+1]==1?-1:0;
-                    }catch (ArrayIndexOutOfBoundsException e) {
+                    try {
+                        length += grid[i][j + 1] == 1 ? -1 : 0;
+                    } catch (ArrayIndexOutOfBoundsException e) {
                     }
                 }
             }

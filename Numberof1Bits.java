@@ -12,8 +12,8 @@ public class Numberof1Bits {
     public int hammingWeight(int n) {
         Integer num = 0;
         String binary = num.toBinaryString(n);
-        for(int i=0; i<binary.length(); i++){
-            if(binary.charAt(i)=='1'){
+        for (int i = 0; i < binary.length(); i++) {
+            if (binary.charAt(i) == '1') {
                 num++;
             }
         }

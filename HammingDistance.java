@@ -15,20 +15,20 @@ public class HammingDistance {
         String yb = a.toBinaryString(y);
         ArrayList<Integer> al = new ArrayList<>();
         ArrayList<Integer> bl = new ArrayList<>();
-        for(int i=xb.length()-1;i>=0; i--){
-            al.add(xb.charAt(i)-48);
+        for (int i = xb.length() - 1; i >= 0; i--) {
+            al.add(xb.charAt(i) - 48);
         }
-        for(int i=yb.length()-1; i>=0; i--){
-            bl.add(yb.charAt(i)-48);
+        for (int i = yb.length() - 1; i >= 0; i--) {
+            bl.add(yb.charAt(i) - 48);
         }
-        int num=0;
-        for(int i=0; i<(al.size()>bl.size()? al.size():bl.size()); i++){
-            try{
-                if(al.get(i)!=bl.get(i)){
+        int num = 0;
+        for (int i = 0; i < (al.size() > bl.size() ? al.size() : bl.size()); i++) {
+            try {
+                if (al.get(i) != bl.get(i)) {
                     num++;
                 }
-            }catch (Exception e) {
-                if((al.size()>bl.size()? al:bl).get(i)==1){
+            } catch (Exception e) {
+                if ((al.size() > bl.size() ? al : bl).get(i) == 1) {
                     num++;
                 }
             }

@@ -1,5 +1,7 @@
 package com.leetcode;
 
+import com.leetcode.elements.TreeNode;
+
 /**
  * Create by WhiteBugs .
  */
@@ -9,7 +11,7 @@ public class InvertBinaryTree {
     //https://leetcode.com/problems/invert-binary-tree/description/
 
     public TreeNode invertTree(TreeNode root) {
-        if(root == null)
+        if (root == null)
             return null;
         TreeNode temp;
         temp = root.left;

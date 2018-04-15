@@ -28,25 +28,25 @@ public class NextGreaterElement1 {
      */
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
         HashMap<Integer, Integer> list = new HashMap<>();
-        for(int i=0; i<nums2.length; i++){
+        for (int i = 0; i < nums2.length; i++) {
             int greater = 0;
-            if(i==nums2.length-1){
+            if (i == nums2.length - 1) {
                 list.put(nums2[i], -1);
                 break;
             }
-            for(int j=i+1; j<nums2.length; j++){
-                if(nums2[j]>nums2[i]){
+            for (int j = i + 1; j < nums2.length; j++) {
+                if (nums2[j] > nums2[i]) {
                     greater = nums2[j];
                     list.put(nums2[i], greater);
                     break;
                 }
-                if(j==nums2.length-1){
+                if (j == nums2.length - 1) {
                     list.put(nums2[i], -1);
                     break;
                 }
             }
         }
-        for(int i=0; i<nums1.length; i++){
+        for (int i = 0; i < nums1.length; i++) {
             nums1[i] = list.get(nums1[i]);
         }
         return nums1;

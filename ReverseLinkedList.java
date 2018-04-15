@@ -1,5 +1,7 @@
 package com.leetcode;
 
+import com.leetcode.elements.ListNode;
+
 /**
  * Create by WhiteBugs .
  */
@@ -25,18 +27,20 @@ public class ReverseLinkedList {
 	 */
 
     private ListNode head = null;
+
     public ListNode reverseList(ListNode head) {//recursively version
-        reverseList(head.next , head);
+        reverseList(head.next, head);
         return head;
     }
-    public ListNode reverseList(ListNode node , ListNode head){
-        if(node == null)
+
+    public ListNode reverseList(ListNode node, ListNode head) {
+        if (node == null)
             return null;
-        if(node.next == null){
+        if (node.next == null) {
             this.head = node;
             return node;
         }
-        reverseList(node.next , head).next = node;
+        reverseList(node.next, head).next = node;
         return node;
     }
 }

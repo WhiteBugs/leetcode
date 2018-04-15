@@ -1,5 +1,7 @@
 package com.leetcode;
 
+import com.leetcode.elements.TreeNode;
+
 /**
  * Create by WhiteBugs .
  */
@@ -12,13 +14,14 @@ public class SecondMinimumNodeInaBinaryTree {
         int val = root.val;
         return returnValue(root, val);
     }
-    private int returnValue(TreeNode node , int val){
-        if(node == null)
+
+    private int returnValue(TreeNode node, int val) {
+        if (node == null)
             return -1;
-        if(node.val == val){
-            int left = returnValue(node.left ,val);
-            int right = returnValue(node.right , val);
-            if(left!=-1 && right != -1)
+        if (node.val == val) {
+            int left = returnValue(node.left, val);
+            int right = returnValue(node.right, val);
+            if (left != -1 && right != -1)
                 return Math.min(left, right);
             return Math.max(left, right);
         }

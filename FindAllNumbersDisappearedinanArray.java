@@ -14,10 +14,10 @@ public class FindAllNumbersDisappearedinanArray {
 
     public List<Integer> findDisappearedNumbers(int[] nums) {
         HashSet<Integer> set = new HashSet<Integer>();
-        for(int i=1; i<=nums.length; i++){
+        for (int i = 1; i <= nums.length; i++) {
             set.add(i);
         }
-        for(int i : nums){
+        for (int i : nums) {
             set.remove(i);
         }
         return new ArrayList<>(set);

@@ -9,14 +9,14 @@ public class AddDigits {
     //https://leetcode.com/problems/add-digits/description/
 
     public int addDigits(int num) {
-        if(num<10){
+        if (num < 10) {
             return num;
         }
         String n = new Integer(num).toString();
         num = 0;
-        for(char c : n.toCharArray()){
-            num += c-48;
+        for (char c : n.toCharArray()) {
+            num += c - 48;
         }
-        return  addDigits(num);
+        return addDigits(num);
     }
 }

@@ -25,26 +25,26 @@ public class RansomNote {
 	 *
 	 */
     public boolean canConstruct(String ransomNote, String magazine) {
-        if(ransomNote==null || ransomNote.length()==0)
+        if (ransomNote == null || ransomNote.length() == 0)
             return true;
         HashMap<Character, Integer> maga = new HashMap<>();
-        for(char c : magazine.toCharArray())
-            if(maga.containsKey(c))
-                maga.put(c, maga.get(c).intValue()+1);
+        for (char c : magazine.toCharArray())
+            if (maga.containsKey(c))
+                maga.put(c, maga.get(c).intValue() + 1);
             else
                 maga.put(c, 1);
-        int i=0;
-        for(char c=ransomNote.charAt(0); i<ransomNote.length(); i++){
-            c=ransomNote.charAt(i);
-            if(maga.containsKey(c)){
-                maga.put(c, maga.get(c).intValue()-1);
-                if(maga.get(c).intValue()==0)
+        int i = 0;
+        for (char c = ransomNote.charAt(0); i < ransomNote.length(); i++) {
+            c = ransomNote.charAt(i);
+            if (maga.containsKey(c)) {
+                maga.put(c, maga.get(c).intValue() - 1);
+                if (maga.get(c).intValue() == 0)
                     maga.remove(c);
-            }else{
+            } else {
                 break;
             }
         }
-        if(i==ransomNote.length())
+        if (i == ransomNote.length())
             return true;
         return false;
     }
